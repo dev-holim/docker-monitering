@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>Real-Time Monitoring</h1>
+    <div id="messages"></div>
+    <button onclick="sendData()">Send Data</button>
+    <button onclick="endData()">End Data</button>
+{#    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.0/socket.io.js"></script>#}
+    <script src="{{ url_for('static', filename='js/socket.io.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+<script>
+    const socket = io("/docker");
+    {#const socket = io({ transports: ['websocket'] });#}
+
+    // 서버로부터 메시지 받기
+    socket.on('server_response', function (res) {
+        {#if(res.status === "start"){#}
+        {#    socket.emit('client_event');#}
+        {# }#}
+        switch (res.status){
+            case "start":
+                socket.emit('client_event');
+                break;
+            case "running":
+                if(res.code===200){
+                    let container_lists = res.data.list
+                    let shutdown_lists = res.data.shutdown_list
+
+                }
+                break;
+            case "disconnect":
+                console.log(res);
+                break;
+        }
+        {#console.log(data)#}
+        {#if(data.code == 200){#}
+        {#    console.log(data.res)#}
+            {#const messages = document.getElementById('messages');#}
+            {#messages.innerHTML += `<p>${data.message}</p>`;#}
+        {# }#}
+
+    });
+
+    // 서버로 데이터 전송
+    function sendData() {
+        const data = {event: 'User Clicked Button'};
+        socket.emit('client_event', data);
+        {#socket.emit('client_event', data, (response) => {#}
+        {#    console.log(response);#}
+        {# });#}
+    }
+
+    // 서버로 데이터 전송
+    function endData() {
+        const data = {event: 'Disconnect'};
+        socket.emit('end_connection', data);
+    }
+    {#$.ajax({#}
+    {#        url: '/proc',#}
+    {#        type: 'post',#}
+    {#        data: {},#}
+    {#        dataType: 'json',#}
+    {#        success: function (data) {#}
+    {#            console.log(data)#}
+    {##}
+    {#        },#}
+    {#        error: function (exception) {#}
+    {#            alert("서버 실패");#}
+    {#            console.log(JSON.stringify(exception, undefined, 4));#}
+    {#        }#}
+    {#    })#}
+</script>
+</body>
+</html>
