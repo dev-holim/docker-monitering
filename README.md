@@ -24,8 +24,8 @@ Docker Monitoring Dashboard는 도커 컨테이너 및 시스템 리소스를 �
 
 ### 2️⃣ 프로젝트 클론
 ```sh
-git clone https://github.com/your-repo/docker-monitoring-dashboard.git
-cd docker-monitoring-dashboard
+git clone https://github.com/dev-holim/docker-monitering.git
+cd docker-monitering
 ```
 
 ### 3️⃣ 환경 변수 설정
